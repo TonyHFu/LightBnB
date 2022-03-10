@@ -253,22 +253,24 @@ exports.addProperty = addProperty;
  * @param {string} id The id of the user.
  * @return {Promise<{}>} A promise to the user.
  */
- const bookReservation = function(id) {
+ const bookReservation = function(propertyId, start, end, userId) {
   return pool.query(`
-    SELECT * 
-    FROM users
-    WHERE id = $1;
-  `, [id])
+    INSERT INTO reservations
+    VALUES
+    (
+      DEFAULT,
+      $1,
+      $2,
+      $3,
+      $4
+    )
+    RETURNING *;
+  `, [start, end, propertyId, userId])
     .then(result => {
-      if (result.rows.length === 0) {
-        // console.log("failed to get user by id");
-        return null; 
-      }
-      // console.log("result.rows id", result.rows);
       return result.rows[0];
     })
     .catch(err => {
       console.log(err.message);
     });
 };
-exports.getUserWithId = getUserWithId;
+exports.bookReservation = bookReservation;

@@ -32,9 +32,15 @@ module.exports = function(router, database) {
       return;
     }
     
-
-
-    database.bookReservation();
+    const { propertyId, start, end } = req.body;
+    database.bookReservation(propertyId, start, end, userId)
+      .then(reservation => {
+        res.send(reservation);
+      })
+      .catch(e => {
+        console.error(e);
+        res.send(e)
+      });
   });
 
   router.post('/properties', (req, res) => {

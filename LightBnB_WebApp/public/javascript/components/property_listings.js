@@ -23,6 +23,12 @@ $(() => {
       const property = properties[propertyId];
       const listing = propertyListing.createListing(property, isReservation);
       addListing(listing);
+      
+      $(`.reserve-button-${property.id}`).on("click", function(e) {
+        // alert("reserved!");
+        console.log("reserved", property.id);
+    
+      });
     }
   }
   window.propertyListings.addProperties = addProperties;

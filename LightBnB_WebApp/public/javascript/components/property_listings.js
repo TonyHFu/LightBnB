@@ -27,7 +27,36 @@ $(() => {
       $(`.reserve-button-${property.id}`).on("click", function(e) {
         // alert("reserved!");
         console.log("reserved", property.id);
-    
+        $(".reservation-form").empty();
+        $(".reservation-form").append(`
+          <form>
+            <div>
+              <label for="start">Start date:</label>
+              <input type="date" id="start" name="reservation-start">
+            </div>
+            <div>
+              <label for="end">End date:</label>
+              <input type="date" id="end" name="reservation-end">
+            </div>
+            <button type="submit" id="submit-reservation">
+              Confirm
+            </button>
+          </form> 
+        `);
+        $("#submit-reservation").on("click", function(e) {
+          e.preventDefault();
+          makeReservation({
+            propertyId: property.id,
+            start: $("#start").val(),
+            end: $("#end").val(),
+          })
+            .then(result => {
+              alert("booked!");
+            })
+            .catch(err => {
+              console.error(err);
+            });
+        })
       });
     }
   }

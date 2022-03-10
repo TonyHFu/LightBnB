@@ -247,3 +247,28 @@ const addProperty = function(property) {
 
 }
 exports.addProperty = addProperty;
+
+/**
+ * Get a single user from the database given their id.
+ * @param {string} id The id of the user.
+ * @return {Promise<{}>} A promise to the user.
+ */
+ const bookReservation = function(id) {
+  return pool.query(`
+    SELECT * 
+    FROM users
+    WHERE id = $1;
+  `, [id])
+    .then(result => {
+      if (result.rows.length === 0) {
+        // console.log("failed to get user by id");
+        return null; 
+      }
+      // console.log("result.rows id", result.rows);
+      return result.rows[0];
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
+};
+exports.getUserWithId = getUserWithId;
